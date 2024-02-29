@@ -1,10 +1,9 @@
-import string
 import uuid
-from tokenize import String
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy import (Column, Uuid, String, DateTime, func, DECIMAL, Boolean, Integer
+from sqlalchemy import (Column, Uuid, String, DateTime,
+                        func, DECIMAL, Boolean, Integer, ForeignKey)
 
 motor = create_engine("sqlite+pysqlite:///banco_de_dados.sqlite",
                       echo=True)
@@ -14,15 +13,15 @@ class Base(DeclarativeBase):
 
 class Categoria(Base):
     __tablename__ = 'tbl_categorias'
-    id = Column(uuid(as_uuid=true),
-         primary_key=true,
+    id = Column(uuid(as_uuid=True),
+         primary_key=True,
          default=uuid.uuid4())
     nome = Column(String,(256),
                   nullable=False)
 
     lista_de_produtos = relationship("Produto", back_populates="categoria",
                                       cascade='all, delete-orphan', lazy='selectin')
-
+class DatasMixin():
     dta_cadastro = Column(DateTime,
                           server_default=func.now(),
                           nullable=False)
